@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FuzbollLadder.Contracts
+namespace FuzbollLadder.ViewModels
 {
     public class SubmitMatchViewModel
     {

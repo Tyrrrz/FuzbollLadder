@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FuzbollLadder.Contracts;
+using FuzbollLadder.ViewModels;
 using FuzbollLadder.Data;
 using FuzbollLadder.Models;
 using FuzbollLadder.Services;
