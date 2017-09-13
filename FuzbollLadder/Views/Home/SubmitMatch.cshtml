@@ -1,0 +1,12 @@
+﻿@model FuzbollLadder.Contracts.SubmitMatchViewModel
+
+<form asp-action="SubmitMatch">
+    <label asp-for="WinnerNamesCsv">Winners:</label>
+    <input asp-for="WinnerNamesCsv" />
+    
+    <label asp-for="LoserNamesCsv">Losers:</label>
+    <input asp-for="LoserNamesCsv" />
+    
+    <br />
+    <button type="submit">Submit</button>
+</form>
