@@ -31,7 +31,7 @@ namespace FuzbollLadder
         {
             app.UseStatusCodePages();
             app.UseDeveloperExceptionPage();
-
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }
