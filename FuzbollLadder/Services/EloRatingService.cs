@@ -16,8 +16,8 @@ namespace FuzbollLadder.Services
             var loserRatingExpected = loserRatingNorm / (winnerRatingNorm + loserRatingNorm);
 
             // Calculate final rating
-            var winnerRatingFinal = winnerRating + 30 * factor * (1 - winnerRatingExpected);
-            var loserRatingFinal = loserRating - 30 * factor * loserRatingExpected;
+            var winnerRatingFinal = winnerRating + 75 * factor * (1 - winnerRatingExpected);
+            var loserRatingFinal = loserRating - 75 * factor * loserRatingExpected;
 
             // Compose delta
             var delta = new RatingDelta
