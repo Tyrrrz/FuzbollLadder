@@ -100,12 +100,19 @@ namespace FuzbollLadder.Controllers
                 losers.Add(player);
             }
 
-            // Calculate average ratings
+            // Add match
+            var match = new Match
+            {
+                Date = DateTime.UtcNow,
+                WinnerIds = winners.Select(p => p.Id).ToArray(),
+                LoserIds = losers.Select(p => p.Id).ToArray()
+            };
+            _context.Matches.Add(match);
+
+            // Update stats
             var avgWinnerRating = winners.Average(p => p.Rating);
             var avgLoserRating = losers.Average(p => p.Rating);
             var ratingDelta = _ratingService.CalculateDelta(avgWinnerRating, avgLoserRating);
-
-            // Update stats
             foreach (var player in winners)
             {
                 player.Wins++;
@@ -115,6 +122,43 @@ namespace FuzbollLadder.Controllers
             {
                 player.Losses++;
                 player.Rating += ratingDelta.LoserDelta;
+            }
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet("/Recalculate")]
+        public IActionResult Recalculate()
+        {
+            // Reset all players' stats
+            foreach (var player in _context.Players)
+            {
+                player.Wins = 0;
+                player.Losses = 0;
+                player.Rating = 1200;
+            }
+
+            // Use match history to recalculate
+            foreach (var match in _context.Matches.OrderBy(m => m.Date))
+            {
+                var winners = _context.Players.Where(p => match.WinnerIds.Contains(p.Id));
+                var losers = _context.Players.Where(p => match.LoserIds.Contains(p.Id));
+
+                var avgWinnerRating = winners.Average(p => p.Rating);
+                var avgLoserRating = losers.Average(p => p.Rating);
+                var ratingDelta = _ratingService.CalculateDelta(avgWinnerRating, avgLoserRating);
+                foreach (var player in winners)
+                {
+                    player.Wins++;
+                    player.Rating += ratingDelta.WinnerDelta;
+                }
+                foreach (var player in losers)
+                {
+                    player.Losses++;
+                    player.Rating += ratingDelta.LoserDelta;
+                }
             }
 
             _context.SaveChanges();
