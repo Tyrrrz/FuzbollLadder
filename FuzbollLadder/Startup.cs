@@ -19,11 +19,13 @@ namespace FuzbollLadder
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DataContext")));
-
             services.AddMvc();
 
+            services.AddDbContext<DataContext>(
+                options => options.UseSqlServer(Configuration.GetConnectionString("DataContext")),
+                ServiceLifetime.Singleton);
+
+            services.AddSingleton<IDataService, DataService>();
             services.AddSingleton<IRatingService, EloRatingService>();
         }
 
@@ -32,7 +34,10 @@ namespace FuzbollLadder
             app.UseStatusCodePages();
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("default", "{controller=Players}/{action=Index}/{id?}");
+            });
         }
     }
 }

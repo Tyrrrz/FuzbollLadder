@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace FuzbollLadder.Models
 {
@@ -13,22 +11,8 @@ namespace FuzbollLadder.Models
 
         public DateTime Date { get; set; }
 
-        public string WinnerIdsCsv { get; set; }
+        public virtual IReadOnlyList<Player> Winners { get; set; }
 
-        [NotMapped]
-        public IReadOnlyList<int> WinnerIds
-        {
-            get => WinnerIdsCsv.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
-            set => WinnerIdsCsv = string.Join(",", value);
-        }
-
-        public string LoserIdsCsv { get; set; }
-
-        [NotMapped]
-        public IReadOnlyList<int> LoserIds
-        {
-            get => LoserIdsCsv.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
-            set => LoserIdsCsv = string.Join(",", value);
-        }
+        public virtual IReadOnlyList<Player> Losers { get; set; }
     }
 }
