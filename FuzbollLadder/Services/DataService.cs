@@ -55,7 +55,11 @@ namespace FuzbollLadder.Services
 
         public async Task AddPlayerAsync(string name)
         {
-            var player = new Player {Name = name};
+            var player = new Player
+            {
+                Name = name,
+                Rating = _ratingService.DefaultRating
+            };
             await _context.Players.AddAsync(player);
             await _context.SaveChangesAsync();
         }
