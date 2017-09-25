@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FuzbollLadder.ViewModels
+namespace FuzbollLadder.ViewModels.Matches
 {
-    public class SubmitMatchViewModel
+    public class AddViewModel
     {
         [Required]
         public string WinnerNamesCsv { get; set; }

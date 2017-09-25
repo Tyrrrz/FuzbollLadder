@@ -20,6 +20,6 @@ namespace FuzbollLadder.Models
         [NotMapped]
         public double WinRate => TotalGames == 0 ? 0 : 1d * Wins / TotalGames;
 
-        public double Rating { get; set; } = 1200;
+        public double Rating { get; set; }
     }
 }

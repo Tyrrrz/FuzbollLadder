@@ -5,6 +5,8 @@ namespace FuzbollLadder.Services
 {
     public class EloRatingService : IRatingService
     {
+        public double DefaultRating => 1200;
+
         public RatingDelta CalculateDelta(double winnerRating, double loserRating, double factor = 1)
         {
             // Normalize ratings

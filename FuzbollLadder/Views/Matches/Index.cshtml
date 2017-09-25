@@ -1,0 +1,32 @@
+﻿@using Tyrrrz.Extensions
+@model IReadOnlyList<FuzbollLadder.Models.Match>
+
+@if (Model.Any())
+{
+    <form asp-action="Recalculate">
+        <button>Recalculate Stats</button>
+    </form>
+
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>Winners</th>
+            <th>Losers</th>
+        </tr>
+
+        @foreach (var match in Model.OrderByDescending(p => p.Date))
+        {
+            <tr>
+                <td>@match.Id</td>
+                <td>@match.Date.ToShortDateString()</td>
+                <td>@match.Winners.Select(p => p.Name).JoinToString(", ")</td>
+                <td>@match.Losers.Select(p => p.Name).JoinToString(", ")</td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <div>There are no matches in the database</div>
+}
