@@ -31,7 +31,7 @@ namespace FuzbollLadder.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddMatchViewModel vm)
+        public async Task<IActionResult> Add(AddViewModel vm)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

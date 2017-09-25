@@ -2,7 +2,7 @@
 
 namespace FuzbollLadder.ViewModels.Matches
 {
-    public class AddMatchViewModel
+    public class AddViewModel
     {
         [Required]
         public string WinnerNamesCsv { get; set; }

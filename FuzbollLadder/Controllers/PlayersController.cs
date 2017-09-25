@@ -27,7 +27,7 @@ namespace FuzbollLadder.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddPlayerViewModel vm)
+        public async Task<IActionResult> Add(AddViewModel vm)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

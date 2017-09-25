@@ -2,7 +2,7 @@
 
 namespace FuzbollLadder.ViewModels.Players
 {
-    public class AddPlayerViewModel
+    public class AddViewModel
     {
         [Required]
         public string Name { get; set; }
