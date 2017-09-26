@@ -1,22 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using FuzbollLadder.Data;
 using FuzbollLadder.Models;
-using Microsoft.EntityFrameworkCore;
+using FuzbollLadder.Options;
+using LiteDB;
+using Microsoft.Extensions.Options;
 
 namespace FuzbollLadder.Services
 {
-    public class DataService : IDataService
+    public class DataService : IDataService, IDisposable
     {
-        private readonly DataContext _context;
         private readonly IRatingService _ratingService;
+        private readonly LiteDatabase _db;
 
-        public DataService(DataContext context, IRatingService ratingService)
+        public DataService(IOptions<DatabaseOptions> optionsAccessor, IRatingService ratingService)
         {
-            _context = context;
+            var options = optionsAccessor.Value;
             _ratingService = ratingService;
+
+            _db = new LiteDatabase(options.ConnectionString);
+            _db.Mapper.Entity<Player>().Id(p => p.Id);
+            _db.Mapper.Entity<Player>().DbRef(p => p.Matches);
+            _db.Mapper.Entity<Player>().Ignore(p => p.TotalGames);
+            _db.Mapper.Entity<Player>().Ignore(p => p.WinRate);
+            _db.Mapper.Entity<Match>().Id(m => m.Id);
+            _db.Mapper.Entity<Match>().DbRef(m => m.Winners);
+            _db.Mapper.Entity<Match>().DbRef(m => m.Losers);
         }
 
         private void ProcessMatch(Match match)
@@ -33,82 +42,89 @@ namespace FuzbollLadder.Services
             {
                 player.Wins++;
                 player.Rating += ratingDelta.WinnerDelta;
-                _context.Entry(player).State = EntityState.Modified;
             }
             foreach (var player in match.Losers)
             {
                 player.Losses++;
                 player.Rating += ratingDelta.LoserDelta;
-                _context.Entry(player).State = EntityState.Modified;
             }
+
+            // Save
+            _db.GetCollection<Player>().Update(match.Winners);
+            _db.GetCollection<Player>().Update(match.Losers);
         }
 
-        public async Task<IReadOnlyList<Player>> GetAllPlayersAsync()
+        public IEnumerable<Player> GetAllPlayers()
         {
-            return await _context.Players.ToArrayAsync();
+            return _db.GetCollection<Player>()
+                .Include(p => p.Matches)
+                .FindAll();
         }
 
-        public async Task<Player> GetPlayerAsync(int id)
+        public Player GetPlayer(int id)
         {
-            return await _context.Players.FirstOrDefaultAsync(p => p.Id == id);
+            return _db.GetCollection<Player>().Include(p => p.Matches).FindById(id);
         }
 
-        public async Task AddPlayerAsync(string name)
+        public void AddPlayer(string name)
         {
             var player = new Player
             {
                 Name = name,
                 Rating = _ratingService.DefaultRating
             };
-            await _context.Players.AddAsync(player);
-            await _context.SaveChangesAsync();
+            _db.GetCollection<Player>().Insert(player);
         }
 
-        public async Task<IReadOnlyList<Match>> GetAllMatchesAsync()
+        public IEnumerable<Match> GetAllMatches()
         {
-            return await _context.Matches.ToArrayAsync();
+            return _db.GetCollection<Match>()
+                .Include(m => m.Winners)
+                .Include(m => m.Losers)
+                .FindAll();
         }
 
-        public async Task<Match> GetMatchAsync(int id)
+        public Match GetMatch(int id)
         {
-            return await _context.Matches.FirstOrDefaultAsync(p => p.Id == id);
+            return _db.GetCollection<Match>().FindById(id);
         }
 
-        public async Task AddMatchAsync(DateTime date, IReadOnlyList<Player> winners, IReadOnlyList<Player> losers)
+        public void AddMatch(DateTime date, IReadOnlyList<Player> winners, IReadOnlyList<Player> losers)
         {
             // Add match
             var match = new Match
             {
                 Date = date,
-                Winners = winners,
-                Losers = losers
+                Winners = winners.ToArray(),
+                Losers = losers.ToArray()
             };
-            await _context.Matches.AddAsync(match);
+            _db.GetCollection<Match>().Insert(match);
 
             // Update player stats
             ProcessMatch(match);
-
-            await _context.SaveChangesAsync();
         }
 
-        public async Task RecalculateMatchesAsync()
+        public void RecalculateMatches()
         {
             // Reset stats
-            foreach (var player in _context.Players)
+            foreach (var player in GetAllPlayers())
             {
                 player.Wins = 0;
                 player.Losses = 0;
                 player.Rating = _ratingService.DefaultRating;
-                _context.Entry(player).State = EntityState.Modified;
+                _db.GetCollection<Player>().Update(player);
             }
 
             // Process all existing matches
-            foreach (var match in _context.Matches)
+            foreach (var match in GetAllMatches())
             {
                 ProcessMatch(match);
             }
+        }
 
-            await _context.SaveChangesAsync();
+        public void Dispose()
+        {
+            _db.Dispose();
         }
     }
 }

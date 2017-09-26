@@ -1,8 +1,7 @@
-﻿using FuzbollLadder.Data;
+﻿using FuzbollLadder.Options;
 using FuzbollLadder.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,11 +18,10 @@ namespace FuzbollLadder
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
             services.AddMvc();
 
-            services.AddDbContext<DataContext>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("DataContext")),
-                ServiceLifetime.Singleton);
+            services.Configure<DatabaseOptions>(Configuration.GetSection("Database"));
 
             services.AddSingleton<IDataService, DataService>();
             services.AddSingleton<IRatingService, EloRatingService>();

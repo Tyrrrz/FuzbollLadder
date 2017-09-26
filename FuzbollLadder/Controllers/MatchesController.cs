@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using FuzbollLadder.Models;
 using FuzbollLadder.Services;
 using FuzbollLadder.ViewModels.Matches;
@@ -18,9 +17,9 @@ namespace FuzbollLadder.Controllers
             _dataService = dataService;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var matches = await _dataService.GetAllMatchesAsync();
+            var matches = _dataService.GetAllMatches().ToArray();
             return View(matches);
         }
 
@@ -31,7 +30,7 @@ namespace FuzbollLadder.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddViewModel vm)
+        public IActionResult Add(AddViewModel vm)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -45,7 +44,7 @@ namespace FuzbollLadder.Controllers
                 return BadRequest("At least one winner and loser is required");
 
             // Get players
-            var players = await _dataService.GetAllPlayersAsync();
+            var players = _dataService.GetAllPlayers();
             var winners = new List<Player>();
             var losers = new List<Player>();
             foreach (var playerName in winnerNames)
@@ -66,15 +65,15 @@ namespace FuzbollLadder.Controllers
             }
 
             // Add match
-            await _dataService.AddMatchAsync(DateTime.UtcNow, winners, losers);
+            _dataService.AddMatch(DateTime.UtcNow, winners, losers);
 
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Recalculate()
+        public IActionResult Recalculate()
         {
-            await _dataService.RecalculateMatchesAsync();
+            _dataService.RecalculateMatches();
 
             return RedirectToAction("Index");
         }

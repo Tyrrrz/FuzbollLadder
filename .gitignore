@@ -260,5 +260,8 @@ paket-files/
 __pycache__/
 *.pyc
 
-# Deployment folder
-[Dd]eploy/
+# Deploy folder
+/Deploy/
+
+# Data folder
+/FuzbollLadder/Data/

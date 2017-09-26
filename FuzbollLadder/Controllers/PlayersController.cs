@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
 using FuzbollLadder.Services;
 using FuzbollLadder.ViewModels.Players;
 using Microsoft.AspNetCore.Mvc;
@@ -14,9 +14,9 @@ namespace FuzbollLadder.Controllers
             _dataService = dataService;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var players = await _dataService.GetAllPlayersAsync();
+            var players = _dataService.GetAllPlayers().ToArray();
             return View(players);
         }
 
@@ -27,12 +27,12 @@ namespace FuzbollLadder.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddViewModel vm)
+        public IActionResult Add(AddViewModel vm)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await _dataService.AddPlayerAsync(vm.Name);
+            _dataService.AddPlayer(vm.Name);
 
             return RedirectToAction("Index");
         }
