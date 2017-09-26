@@ -20,7 +20,6 @@ namespace FuzbollLadder.Services
 
             _db = new LiteDatabase(options.ConnectionString);
             _db.Mapper.Entity<Player>().Id(p => p.Id);
-            _db.Mapper.Entity<Player>().DbRef(p => p.Matches);
             _db.Mapper.Entity<Player>().Ignore(p => p.TotalGames);
             _db.Mapper.Entity<Player>().Ignore(p => p.WinRate);
             _db.Mapper.Entity<Match>().Id(m => m.Id);
@@ -56,14 +55,12 @@ namespace FuzbollLadder.Services
 
         public IEnumerable<Player> GetAllPlayers()
         {
-            return _db.GetCollection<Player>()
-                .Include(p => p.Matches)
-                .FindAll();
+            return _db.GetCollection<Player>().FindAll();
         }
 
         public Player GetPlayer(int id)
         {
-            return _db.GetCollection<Player>().Include(p => p.Matches).FindById(id);
+            return _db.GetCollection<Player>().FindById(id);
         }
 
         public void AddPlayer(string name)

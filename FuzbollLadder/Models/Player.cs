@@ -15,7 +15,5 @@
         public double WinRate => TotalGames == 0 ? 0 : 1d * Wins / TotalGames;
 
         public double Rating { get; set; }
-
-        public Match[] Matches { get; set; }
     }
 }
