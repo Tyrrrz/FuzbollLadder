@@ -44,7 +44,7 @@ namespace FuzbollLadder.Controllers
                 return BadRequest("At least one winner and loser is required");
 
             // Get players
-            var players = _dataService.GetAllPlayers();
+            var players = _dataService.GetAllPlayers().ToArray();
             var winners = new List<Player>();
             var losers = new List<Player>();
             foreach (var playerName in winnerNames)
@@ -80,14 +80,6 @@ namespace FuzbollLadder.Controllers
             _dataService.DeleteMatch(id);
 
             // Recalculate all
-            _dataService.RecalculateMatches();
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public IActionResult Recalculate()
-        {
             _dataService.RecalculateMatches();
 
             return RedirectToAction("Index");
