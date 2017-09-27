@@ -101,6 +101,11 @@ namespace FuzbollLadder.Services
             ProcessMatch(match);
         }
 
+        public void DeleteMatch(int id)
+        {
+            _db.GetCollection<Match>().Delete(id);
+        }
+
         public void RecalculateMatches()
         {
             // Reset stats

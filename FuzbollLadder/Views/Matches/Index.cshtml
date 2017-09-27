@@ -13,6 +13,7 @@
             <th>Date</th>
             <th>Winners</th>
             <th>Losers</th>
+            <th />
         </tr>
 
         @foreach (var match in Model.OrderByDescending(p => p.Date))
@@ -22,6 +23,7 @@
                 <td>@match.Date.ToShortDateString()</td>
                 <td>@match.Winners.Select(p => p.Name).JoinToString(", ")</td>
                 <td>@match.Losers.Select(p => p.Name).JoinToString(", ")</td>
+                <td><form asp-action="Delete" asp-route-id="@match.Id"><button>Delete</button></form></td>
             </tr>
         }
     </table>
