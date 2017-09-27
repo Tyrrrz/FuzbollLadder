@@ -21,8 +21,8 @@
             <tr>
                 <td>@match.Id</td>
                 <td>@match.Date.ToShortDateString()</td>
-                <td>@match.Winners.Select(p => p.Name).OrderBy(n => n).JoinToString(", ")</td>
-                <td>@match.Losers.Select(p => p.Name).OrderBy(n => n).JoinToString(", ")</td>
+                <td>@match.Winners.Select(p => p.Name).JoinToString(", ")</td>
+                <td>@match.Losers.Select(p => p.Name).JoinToString(", ")</td>
                 <td><form asp-action="Delete" asp-route-id="@match.Id"><button>Delete</button></form></td>
             </tr>
         }

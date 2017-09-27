@@ -92,8 +92,8 @@ namespace FuzbollLadder.Services
             var match = new Match
             {
                 Date = date,
-                Winners = winners.ToArray(),
-                Losers = losers.ToArray()
+                Winners = winners.OrderBy(p => p.Id).ToArray(),
+                Losers = losers.OrderBy(p => p.Id).ToArray()
             };
             _db.GetCollection<Match>().Insert(match);
 
