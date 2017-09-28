@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using FuzbollLadder.Models;
 using FuzbollLadder.Options;
 using LiteDB;
 using Microsoft.Extensions.Options;
+using Tyrrrz.Extensions;
 
 namespace FuzbollLadder.Services
 {
@@ -18,6 +20,7 @@ namespace FuzbollLadder.Services
             var options = optionsAccessor.Value;
             _ratingService = ratingService;
 
+            // Configure DB and mapping
             _db = new LiteDatabase(options.ConnectionString);
             _db.Mapper.Entity<Player>().Id(p => p.Id);
             _db.Mapper.Entity<Player>().Ignore(p => p.TotalGames);
@@ -25,6 +28,13 @@ namespace FuzbollLadder.Services
             _db.Mapper.Entity<Match>().Id(m => m.Id);
             _db.Mapper.Entity<Match>().DbRef(m => m.Winners);
             _db.Mapper.Entity<Match>().DbRef(m => m.Losers);
+
+            // Create directory for DB if needed
+            var dbFilePath = options.ConnectionString.Contains("Filename=")
+                ? options.ConnectionString.SubstringAfter("Filename=").SubstringUntil(";")
+                : options.ConnectionString;
+            var dbDirPath = Path.GetDirectoryName(dbFilePath);
+            Directory.CreateDirectory(dbDirPath);
         }
 
         private void ProcessMatch(Match match)
