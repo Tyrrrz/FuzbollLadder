@@ -1,5 +1,4 @@
 ﻿using System;
-using FuzbollLadder.Models;
 
 namespace FuzbollLadder.Services
 {
@@ -7,7 +6,7 @@ namespace FuzbollLadder.Services
     {
         public double DefaultRating => 1200;
 
-        public RatingDelta CalculateDelta(double winnerRating, double loserRating, double factor = 1)
+        public double CalculateDelta(double winnerRating, double loserRating, double factor = 1)
         {
             // Normalize ratings
             var winnerRatingNorm = Math.Pow(10, winnerRating / 400);
@@ -15,20 +14,11 @@ namespace FuzbollLadder.Services
 
             // Calculate expected ratings
             var winnerRatingExpected = winnerRatingNorm / (winnerRatingNorm + loserRatingNorm);
-            var loserRatingExpected = loserRatingNorm / (winnerRatingNorm + loserRatingNorm);
 
             // Calculate final rating
             var winnerRatingFinal = winnerRating + 75 * factor * (1 - winnerRatingExpected);
-            var loserRatingFinal = loserRating - 75 * factor * loserRatingExpected;
 
-            // Compose delta
-            var delta = new RatingDelta
-            {
-                WinnerDelta = winnerRatingFinal - winnerRating,
-                LoserDelta = loserRatingFinal - loserRating
-            };
-
-            return delta;
+            return winnerRatingFinal - winnerRating;
         }
     }
 }

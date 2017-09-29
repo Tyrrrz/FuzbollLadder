@@ -1,5 +1,4 @@
-﻿@using Tyrrrz.Extensions
-@model IReadOnlyList<FuzbollLadder.Models.Match>
+﻿@model IReadOnlyList<FuzbollLadder.Models.Match>
 
 @if (Model.Any())
 {
@@ -9,7 +8,8 @@
             <th>Date</th>
             <th>Winners</th>
             <th>Losers</th>
-            <th />
+            <th>Delta</th>
+            <th/>
         </tr>
 
         @foreach (var match in Model.OrderByDescending(p => p.Date))
@@ -17,9 +17,24 @@
             <tr>
                 <td>@match.Id</td>
                 <td>@match.Date.ToShortDateString()</td>
-                <td>@match.Winners.Select(p => p.Name).JoinToString(", ")</td>
-                <td>@match.Losers.Select(p => p.Name).JoinToString(", ")</td>
-                <td><form asp-action="Delete" asp-route-id="@match.Id"><button>Delete</button></form></td>
+                <td>
+                    @foreach (var player in match.Winners)
+                    {
+                        <div>@player.Name</div>
+                    }
+                </td>
+                <td>
+                    @foreach (var player in match.Losers)
+                    {
+                        <div>@player.Name</div>
+                    }
+                </td>
+                <td>±@match.RatingDelta.ToString("0")</td>
+                <td>
+                    <form asp-action="Delete" asp-route-id="@match.Id">
+                        <button>Delete</button>
+                    </form>
+                </td>
             </tr>
         }
     </table>

@@ -45,17 +45,18 @@ namespace FuzbollLadder.Services
 
             // Calculate rating delta based on result
             var ratingDelta = _ratingService.CalculateDelta(avgWinnerRating, avgLoserRating);
+            match.RatingDelta = ratingDelta;
 
             // Update player stats
             foreach (var player in match.Winners)
             {
                 player.Wins++;
-                player.Rating += ratingDelta.WinnerDelta;
+                player.Rating += ratingDelta;
             }
             foreach (var player in match.Losers)
             {
                 player.Losses++;
-                player.Rating += ratingDelta.LoserDelta;
+                player.Rating += ratingDelta;
             }
 
             // Save
@@ -105,10 +106,12 @@ namespace FuzbollLadder.Services
                 Winners = winners.OrderBy(p => p.Id).ToArray(),
                 Losers = losers.OrderBy(p => p.Id).ToArray()
             };
-            _db.GetCollection<Match>().Insert(match);
 
-            // Update player stats
+            // Process match and update player stats
             ProcessMatch(match);
+
+            // Add match
+            _db.GetCollection<Match>().Insert(match);
         }
 
         public void DeleteMatch(int id)

@@ -11,5 +11,7 @@ namespace FuzbollLadder.Models
         public Player[] Winners { get; set; }
 
         public Player[] Losers { get; set; }
+
+        public double RatingDelta { get; set; }
     }
 }
