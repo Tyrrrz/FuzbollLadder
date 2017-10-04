@@ -56,7 +56,7 @@ namespace FuzbollLadder.Services
             foreach (var player in match.Losers)
             {
                 player.Losses++;
-                player.Rating += ratingDelta;
+                player.Rating -= ratingDelta;
             }
 
             // Save
