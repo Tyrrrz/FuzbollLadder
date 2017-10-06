@@ -1,17 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PlayerContainer from './containers/PlayerContainer';
 
 export default class App extends React.Component {
     render() {
-        fetch('/all').then(function(response) {
-          return response.json();
-        })
-        .then(function(users) {
-            console.log(users)
-        })
         return (
                 <div>
-                    Hello
+                    <PlayerContainer />
                 </div>
             );
     }
