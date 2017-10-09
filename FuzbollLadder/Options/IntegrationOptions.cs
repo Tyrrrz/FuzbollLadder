@@ -2,6 +2,6 @@
 {
     public class IntegrationOptions
     {
-        public string WeebhookUrl { get; set; }
+        public string WebhookUrl { get; set; }
     }
 }

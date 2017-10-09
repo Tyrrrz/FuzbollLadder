@@ -22,7 +22,7 @@ namespace FuzbollLadder.Services
 
         public async Task SendNotificationAsync(string text)
         {
-            if (_options.WeebhookUrl.IsBlank())
+            if (_options.WebhookUrl.IsBlank())
                 return;
             if (text.IsBlank())
                 return;
@@ -32,7 +32,7 @@ namespace FuzbollLadder.Services
             var content = new StringContent(data, Encoding.UTF8, "application/json");
 
             // Send
-            using (await _client.PostAsync(_options.WeebhookUrl, content))
+            using (await _client.PostAsync(_options.WebhookUrl, content))
             {
             }
         }
