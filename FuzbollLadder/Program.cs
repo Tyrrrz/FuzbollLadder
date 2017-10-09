@@ -17,7 +17,6 @@ namespace FuzbollLadder
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseSetting("detailedErrors", "true")
                 .UseStartup<Startup>()
                 .CaptureStartupErrors(true)
                 .Build();
