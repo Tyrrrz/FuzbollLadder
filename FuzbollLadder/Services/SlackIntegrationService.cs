@@ -24,6 +24,8 @@ namespace FuzbollLadder.Services
         {
             if (_options.WeebhookUrl.IsBlank())
                 return;
+            if (text.IsBlank())
+                return;
 
             // Format
             var data = JsonConvert.SerializeObject(new {text});

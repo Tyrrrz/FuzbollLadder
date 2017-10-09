@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using FluentScheduler;
 using FuzbollLadder.Models;
-using Tyrrrz.Extensions;
 
 namespace FuzbollLadder.Services
 {
@@ -29,27 +28,16 @@ namespace FuzbollLadder.Services
             // Get current ladder
             var players = _dataService.GetAllPlayers().ToArray();
 
-            // Compare with last ladder
-            foreach (var lastPlayer in _lastPlayers.EmptyIfNull())
+            // Compare with last ladder and add deltas
+            foreach (var player in players)
             {
-                var player = players.FirstOrDefault(p => p.Id == lastPlayer.Id);
-
-                // New player
-                if (player == null)
+                var lastPlayer = _lastPlayers?.FirstOrDefault(p => p.Id == player.Id);
+                if (lastPlayer != null && Math.Abs(player.Rating - lastPlayer.Rating) > 10e-5)
                 {
                     playerDeltas.Add(new PlayerDelta
                     {
-                        Player = lastPlayer,
-                        Delta = lastPlayer.Rating
-                    });
-                }
-                // Old player with different rating
-                else if (Math.Abs(player.Rating - lastPlayer.Rating) > 10e-5)
-                {
-                    playerDeltas.Add(new PlayerDelta
-                    {
-                        Player = lastPlayer,
-                        Delta = lastPlayer.Rating - player.Rating
+                        Player = player,
+                        Delta = player.Rating - lastPlayer.Rating
                     });
                 }
             }
@@ -65,16 +53,20 @@ namespace FuzbollLadder.Services
             }
 
             // Send payload
-            _integrationService.SendNotificationAsync(textBuffer.ToString()).GetAwaiter().GetResult();
+            if (textBuffer.Length > 0)
+            {
+                _integrationService.SendNotificationAsync(textBuffer.ToString()).GetAwaiter().GetResult();
+            }
         }
 
         public void Initialize()
         {
             var registry = new Registry();
-            JobManager.Initialize(registry);
 
             // Jobs
             registry.Schedule(() => SendPlayerDeltasJob()).NonReentrant().ToRunEvery(1).Days().At(18, 00);
+
+            JobManager.Initialize(registry);
         }
     }
 }
