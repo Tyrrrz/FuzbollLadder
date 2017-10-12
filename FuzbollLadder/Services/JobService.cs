@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using FluentScheduler;
 using FuzbollLadder.Models;
+using Tyrrrz.Extensions;
 
 namespace FuzbollLadder.Services
 {
@@ -20,7 +22,7 @@ namespace FuzbollLadder.Services
             _integrationService = integrationService;
         }
 
-        private void SendPlayerDeltasJob()
+        private async Task SendPlayerDeltasJobAsync()
         {
             // Prepare deltas
             var playerDeltas = new List<PlayerDelta>();
@@ -48,15 +50,12 @@ namespace FuzbollLadder.Services
             // Compose payload
             var textBuffer = new StringBuilder();
             foreach (var playerDelta in playerDeltas)
-            {
                 textBuffer.AppendLine($"*{playerDelta.Player.Name}*: {playerDelta.Delta:+0;-#;}");
-            }
 
-            // Send payload
-            if (textBuffer.Length > 0)
-            {
-                _integrationService.SendNotificationAsync(textBuffer.ToString()).GetAwaiter().GetResult();
-            }
+            // Send notification
+            var text = textBuffer.ToString().Trim();
+            if (text.IsNotBlank())
+                await _integrationService.SendNotificationAsync(text);
         }
 
         public void Initialize()
@@ -64,7 +63,10 @@ namespace FuzbollLadder.Services
             var registry = new Registry();
 
             // Jobs
-            registry.Schedule(() => SendPlayerDeltasJob()).NonReentrant().ToRunEvery(1).Days().At(18, 00);
+            registry.Schedule(() => SendPlayerDeltasJobAsync().GetAwaiter().GetResult())
+                .NonReentrant()
+                .ToRunOnceAt(18, 00)
+                .AndEvery(1).Days().At(18, 00);
 
             JobManager.Initialize(registry);
         }

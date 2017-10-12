@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using FuzbollLadder.Options;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Tyrrrz.Extensions;
 
 namespace FuzbollLadder.Services
 {
@@ -22,20 +21,13 @@ namespace FuzbollLadder.Services
 
         public async Task SendNotificationAsync(string text)
         {
-            if (_options.WebhookUrl.IsBlank())
-                return;
-            if (text.IsBlank())
-                return;
-
             // Format
             var data = JsonConvert.SerializeObject(new {text});
             var content = new StringContent(data, Encoding.UTF8, "application/json");
 
             // Send
             using (var response = await _client.PostAsync(_options.WebhookUrl, content))
-            {
                 response.EnsureSuccessStatusCode();
-            }
         }
 
         public void Dispose()
