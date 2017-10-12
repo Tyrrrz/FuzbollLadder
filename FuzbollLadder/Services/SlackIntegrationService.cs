@@ -32,8 +32,9 @@ namespace FuzbollLadder.Services
             var content = new StringContent(data, Encoding.UTF8, "application/json");
 
             // Send
-            using (await _client.PostAsync(_options.WebhookUrl, content))
+            using (var response = await _client.PostAsync(_options.WebhookUrl, content))
             {
+                response.EnsureSuccessStatusCode();
             }
         }
 
