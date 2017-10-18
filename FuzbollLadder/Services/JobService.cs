@@ -33,7 +33,7 @@ namespace FuzbollLadder.Services
             // Compare with last ladder and add deltas
             foreach (var player in players)
             {
-                var lastPlayer = _lastPlayers?.FirstOrDefault(p => p.Id == player.Id);
+                var lastPlayer = _lastPlayers.FirstOrDefault(p => p.Id == player.Id);
                 if (lastPlayer != null && Math.Abs(player.Rating - lastPlayer.Rating) > 10e-5)
                 {
                     playerDeltas.Add(new PlayerDelta
@@ -61,6 +61,9 @@ namespace FuzbollLadder.Services
         public void Initialize()
         {
             var registry = new Registry();
+
+            // Pre-cache ladder
+            _lastPlayers = _dataService.GetAllPlayers().ToArray();
 
             // Jobs
             registry.Schedule(() => SendPlayerDeltasJobAsync().GetAwaiter().GetResult())
