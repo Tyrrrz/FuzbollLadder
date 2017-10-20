@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import Player from './Player'
 
-const Players = ({ players = [], onBookClick }) => (
+const Players = ({ players = [] }) => (
     <table className="players-list table">
         <thead>
             <tr>
-                <th>Rank</th>
+                <th scope="row">Rank</th>
                 <th>Player</th>
                 <th>Wins</th>
                 <th>Losses</th>

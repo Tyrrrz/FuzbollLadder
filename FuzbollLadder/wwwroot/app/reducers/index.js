@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux'
 import players from './players';
+import matches from './matches';
 
-const PlayersApp = combineReducers({
-    players
+const FuzbollApp = combineReducers({
+    players,
+    matches
 })
 
-export default PlayersApp
+export default FuzbollApp

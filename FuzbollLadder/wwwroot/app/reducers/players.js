@@ -6,7 +6,6 @@ export default (state = { players: [] }, action) => {
             if (!action.players || action.players.lenght === 0) {
                 return state;
             }
-            console.log(action.players)
             return {
                 players: state.players.concat(action.players),
             };

@@ -14,11 +14,23 @@ namespace FuzbollLadder.Controllers
             _dataService = dataService;
         }
         [HttpGet]
-        [Route("all")]
-        public IActionResult GetAllPlayers()
+        [Route("[action]")]
+        public IActionResult All()
         {
             var players = _dataService.GetAllPlayers().ToList();
             return Ok(players);
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult Add([FromBody] AddViewModel vm)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            _dataService.AddPlayer(vm.Name);
+
+            return Ok(vm.Name);
         }
     }
 }
