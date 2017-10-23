@@ -22,11 +22,8 @@ namespace FuzbollLadder
             services.AddMvc();
 
             services.Configure<DatabaseOptions>(Configuration.GetSection("Database"));
-            services.Configure<IntegrationOptions>(Configuration.GetSection("Integration"));
 
             services.AddSingleton<IDataService, DataService>();
-            services.AddSingleton<IIntegrationService, SlackIntegrationService>();
-            services.AddSingleton<IJobService, JobService>();
             services.AddSingleton<IRatingService, EloRatingService>();
         }
 
@@ -39,8 +36,6 @@ namespace FuzbollLadder
             {
                 routes.MapRoute("default", "{controller=Players}/{action=Index}/{id?}");
             });
-
-            app.ApplicationServices.GetService<IJobService>().Initialize();
         }
     }
 }
