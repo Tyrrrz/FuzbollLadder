@@ -1,0 +1,23 @@
+﻿@model IReadOnlyList<FuzbollLadder.Models.PlayerStat>
+
+@if (Model.Any())
+{
+    <table>
+        <tr>
+            <th>Player</th>
+            <th>1 day</th>
+        </tr>
+
+        @foreach (var playerStat in Model.OrderByDescending(p => p.Player.Rating))
+        {
+            <tr>
+                <td>@playerStat.Player.Name</td>
+                <td>@playerStat.DailyRatingDelta.ToString("+#;-#;0")</td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <div>There are no statistics to show</div>
+}

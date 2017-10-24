@@ -65,7 +65,7 @@ namespace FuzbollLadder.Controllers
             }
 
             // Add match
-            _dataService.AddMatch(DateTime.UtcNow, winners, losers);
+            _dataService.AddMatch(DateTime.Now, winners, losers);
 
             return RedirectToAction("Index");
         }

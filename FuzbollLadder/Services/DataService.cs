@@ -137,6 +137,37 @@ namespace FuzbollLadder.Services
             }
         }
 
+        public IEnumerable<PlayerStat> GetAllPlayerStats()
+        {
+            // Get matches today
+            var matchesToday = GetAllMatches().Where(m => m.Date.Date == DateTime.Today).ToArray();
+
+            // Get all players
+            var players = GetAllPlayers().ToArray();
+
+            // Yield the stats
+            foreach (var player in players)
+            {
+                // Calculate delta
+                var delta = 0d;
+                foreach (var match in matchesToday)
+                {
+                    if (match.Winners.Any(p => p.Id == player.Id))
+                        delta += match.RatingDelta;
+                    else if (match.Losers.Any(p => p.Id == player.Id))
+                        delta -= match.RatingDelta;
+                }
+
+                var stat = new PlayerStat
+                {
+                    Player = player,
+                    DailyRatingDelta = delta
+                };
+
+                yield return stat;
+            }
+        }
+
         public void Dispose()
         {
             _db.Dispose();

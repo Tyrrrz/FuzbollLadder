@@ -15,5 +15,7 @@ namespace FuzbollLadder.Services
         void AddMatch(DateTime date, IReadOnlyList<Player> winners, IReadOnlyList<Player> losers);
         void DeleteMatch(int id);
         void RecalculateMatches();
+
+        IEnumerable<PlayerStat> GetAllPlayerStats();
     }
 }
