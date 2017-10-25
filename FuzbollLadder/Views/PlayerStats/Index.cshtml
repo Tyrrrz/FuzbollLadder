@@ -5,7 +5,9 @@
     <table>
         <tr>
             <th>Player</th>
-            <th>1 day</th>
+            <th>Today</th>
+            <th>Last 7 days</th>
+            <th>Last 30 days</th>
         </tr>
 
         @foreach (var playerStat in Model.OrderByDescending(p => p.Player.Rating))
@@ -13,6 +15,8 @@
             <tr>
                 <td>@playerStat.Player.Name</td>
                 <td>@playerStat.DailyRatingDelta.ToString("+#;-#;0")</td>
+                <td>@playerStat.WeeklyRatingDelta.ToString("+#;-#;0")</td>
+                <td>@playerStat.MonthlyRatingDelta.ToString("+#;-#;0")</td>
             </tr>
         }
     </table>

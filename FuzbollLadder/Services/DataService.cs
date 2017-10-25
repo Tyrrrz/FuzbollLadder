@@ -139,8 +139,11 @@ namespace FuzbollLadder.Services
 
         public IEnumerable<PlayerStat> GetAllPlayerStats()
         {
-            // Get matches today
-            var matchesToday = GetAllMatches().Where(m => m.Date.Date == DateTime.Today).ToArray();
+            // Get matches within 30 days
+            var today = DateTime.Today;
+            var weekAgo = today.AddDays(-7);
+            var monthAgo = today.AddDays(-30);
+            var matchesToday = GetAllMatches().Where(m => m.Date >= monthAgo).ToArray();
 
             // Get all players
             var players = GetAllPlayers().ToArray();
@@ -148,20 +151,34 @@ namespace FuzbollLadder.Services
             // Yield the stats
             foreach (var player in players)
             {
-                // Calculate delta
-                var delta = 0d;
+                // Calculate deltas
+                var dailyRatingDelta = 0d;
+                var weeklyRatingDelta = 0d;
+                var monthlyRatingDelta = 0d;
                 foreach (var match in matchesToday)
                 {
+                    // Multiplier
+                    var mult = 0;
                     if (match.Winners.Any(p => p.Id == player.Id))
-                        delta += match.RatingDelta;
+                        mult = 1;
                     else if (match.Losers.Any(p => p.Id == player.Id))
-                        delta -= match.RatingDelta;
+                        mult = -1;
+
+                    // Add values
+                    if (match.Date >= today)
+                        dailyRatingDelta += mult * match.RatingDelta;
+                    if (match.Date >= weekAgo)
+                        weeklyRatingDelta += mult * match.RatingDelta;
+                    if (match.Date >= monthAgo)
+                        monthlyRatingDelta += mult * match.RatingDelta;
                 }
 
                 var stat = new PlayerStat
                 {
                     Player = player,
-                    DailyRatingDelta = delta
+                    DailyRatingDelta = dailyRatingDelta,
+                    WeeklyRatingDelta = weeklyRatingDelta,
+                    MonthlyRatingDelta = monthlyRatingDelta
                 };
 
                 yield return stat;
