@@ -2,10 +2,22 @@ body {
     min-width: 100%;
 }
 
+.btn {
+    cursor: pointer;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+}
+
 .layout-container {
     margin: 0 auto;
     max-width: 800px;
     width: auto;
+}
+.action-content-container {
+    max-width: 500px;
+    width: 100%;
 }
 
 .navigation {

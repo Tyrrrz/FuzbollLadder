@@ -6,6 +6,7 @@ import Match from '../components/Match'
 
 class Matches extends React.Component {
     render() {
+        const { onDeleteMatch } = this.props
         return (
             <table className="matches-list table">
                 <thead>
@@ -21,10 +22,9 @@ class Matches extends React.Component {
                 <tbody>
                     {this.props.matches.map(
                         match => (
-                            <Match key={match.id} {...match} />
+                            <Match onDeleteMatch={onDeleteMatch} key={match.id} {...match} />
                     ))}
                 </tbody>
-
             </table>);
     }
 }

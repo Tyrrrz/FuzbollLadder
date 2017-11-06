@@ -20,12 +20,19 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                loader: 'babel-loader',
-                query: {
-                    presets: ['es2015', 'react']
-                },
+                test: /\.js?$/,
+                use: [
+                  {
+                    loader: 'babel-loader',
+                    options: {
+                      plugins: [
+                        'transform-decorators-legacy',
+                        'transform-class-properties',
+                      ],
+                    },
+                  },
+                ],
+                exclude: /(node_modules)/,
             },
             {
                 test: /\.scss$/,
@@ -36,6 +43,7 @@ module.exports = {
                     'sass-loader'
                 ]
             },
+            { test: /\.css$/, loader: "style-loader!css-loader" }
         ]
     },
     plugins: [

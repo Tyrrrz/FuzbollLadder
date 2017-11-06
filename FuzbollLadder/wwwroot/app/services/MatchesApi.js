@@ -19,4 +19,18 @@ export default {
         .then(x => x.json())
         .then(x => dispatch(actions.MATCH_ADDED(x)));
     },
+    deleteMatch: (dispatch, matchId) => {
+        fetch(`/api/matches/delete`, {
+            method: "DELETE",
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: matchId
+            })
+        })
+        .then(x => x.json())
+        .then(x => dispatch(actions.MATCH_DELETED(x)));
+    },
 };

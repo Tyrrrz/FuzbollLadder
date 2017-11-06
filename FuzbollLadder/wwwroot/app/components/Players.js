@@ -3,25 +3,28 @@ import { Link } from 'react-router-dom'
 import Player from './Player'
 
 const Players = ({ players = [] }) => (
-    <table className="players-list table">
-        <thead>
-            <tr>
-                <th scope="row">Rank</th>
-                <th>Player</th>
-                <th>Wins</th>
-                <th>Losses</th>
-                <th>Total</th>
-                <th>Winrate</th>
-                <th>Rating</th>
-            </tr>
-        </thead>
-        <tbody>
-            {players.map(
-                player => (
-                    <Player key={player.id} {...player} />
-            ))}
-        </tbody>
+    <div className="mt-2">
+        <table className="table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Player</th>
+                    <th>Wins</th>
+                    <th>Losses</th>
+                    <th>Total</th>
+                    <th>Winrate</th>
+                    <th>Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                {players.map(
+                    player => (
+                        <Player key={player.id} {...player} />
+                ))}
+            </tbody>
 
-    </table>);
+        </table>
+    </div>
+);
 
 export default Players;

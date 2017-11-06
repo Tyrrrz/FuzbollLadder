@@ -65,5 +65,21 @@ namespace FuzbollLadder.Controllers
 
             return Ok();
         }
+
+        [HttpDelete]
+        [Route("[action]")]
+        public IActionResult Delete(int id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            // Delete match
+            _dataService.DeleteMatch(id);
+
+            // Recalculate all
+            _dataService.RecalculateMatches();
+
+            return RedirectToAction("Index");
+        }
     }
 }

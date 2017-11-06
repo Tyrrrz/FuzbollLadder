@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import actions from '../actions'
 import AddMatch from '../components/AddMatch'
+import MatchesApi from '../services/MatchesApi'
 
 
 const mapStateToProps = state => state.matches || {}

@@ -8,9 +8,9 @@ class Player extends React.Component {
         player.rating = (player.rating).toFixed(0)
         return (
             <tr className="player-item">
-                <th className="rank" scope="row">
+                <td className="rank">
                     {player.id}
-                </th>
+                </td>
                 <td className="name">
                     {player.name}
                 </td>

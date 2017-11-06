@@ -1,18 +1,46 @@
-import React from 'react';
+import React from 'react'
+
+import { isFunction } from 'lodash'
 
 export default class AddMatch extends React.Component {
-    render() {     
-        let winners = null;
-        let losers = null;
+    state = {
+        winners: '',
+        losers: '',
+    }
+
+    render() {    
+        const { onAddMatch } = this.props 
+
         return (
-            <div>
-                <div>Submit match</div>
-                <h3>Winners</h3>
-                <input type="text" ref={(input) => { winners = input; }} />
-                <h3>Losers</h3>
-                <input type="text" ref={(input) => { losers = input; }} />
-                <button onClick={(e) => { e.preventDefault(); this.props.onAddMatch(winners.value, losers.value); }}>Submit</button>
-            </div>
+            <form className="action-content-container">
+                <div className="mt-5 form-group">
+                    <label for="winners">Winners</label>
+                    <input className="form-control" type="text" id="winners" onChange={this._setValue.bind(this, 'winners')} />
+                </div>
+                <div className="mt-1 form-group">
+                    <label for="losers">Losers</label>
+                    <input className="form-control" type="text" id="losers" onChange={this._setValue.bind(this, 'losers')} />
+                </div>
+                <button 
+                    className="btn btn-primary" 
+                    type="submit"
+                    onClick={this._onSubmit}>
+                    Submit
+                </button>
+            </form>
         )
     }
+
+    _setValue = (event, value) => {
+        this.setState({ value })
+    }
+
+   _onSubmit = () => {
+        const { onAddMatch } = this.props
+        const { winners, losers } = this.state
+        
+        if (isFunction(onAddMatch)) {
+            onAddMatch(winners, losers)
+        }
+   }
 }
