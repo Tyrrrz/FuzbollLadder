@@ -35,12 +35,12 @@ export default class AddMatch extends React.Component {
         this.setState({ value })
     }
 
-   _onSubmit = () => {
+    _onSubmit = () => {
         const { onAddMatch } = this.props
         const { winners, losers } = this.state
         
         if (isFunction(onAddMatch)) {
             onAddMatch(winners, losers)
         }
-   }
+    }
 }

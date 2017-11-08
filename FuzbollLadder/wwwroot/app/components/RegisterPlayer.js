@@ -1,8 +1,12 @@
-import React from 'react';
+import React from 'react'
+import { isFunction } from 'lodash'
 
 export default class RegisterPlayer extends React.Component {
-    render() {     
-        let text = null;
+    state = {
+        player: '',
+    }
+
+    render() {    
         return (
             <div className="action-content-container mt-5"> 
                 <div className="input-group">
@@ -10,12 +14,12 @@ export default class RegisterPlayer extends React.Component {
                         type="text" 
                         className="form-control" 
                         placeholder="Player name"
-                        ref={(input) => { text = input; }} />
+                        onChange={this._setValue.bind(this)} />
                     <span className="input-group-btn ">
                         <button 
                             className="btn btn-primary" 
                             type="submit"
-                            onClick={(e) => { e.preventDefault(); this.props.onRegisterPlayer(text.value); }}>
+                            onClick={this._onSubmit}>
                             Register
                         </button>
                     </span>
@@ -23,5 +27,19 @@ export default class RegisterPlayer extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    _setValue = event => {
+        this.setState({player: event.target.value})
+    }
+
+    _onSubmit = () => {
+        const { onRegisterPlayer } = this.props 
+        const { player } = this.state
+
+        if (isFunction(onRegisterPlayer)) {
+            onRegisterPlayer(player)
+            this.props.history.push('/')
+        }
     }
 }

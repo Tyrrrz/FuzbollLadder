@@ -8,7 +8,7 @@ namespace FuzbollLadder.Services
     {
         IEnumerable<Player> GetAllPlayers();
         Player GetPlayer(int id);
-        void AddPlayer(string name);
+        Player AddPlayer(string name);
 
         IEnumerable<Match> GetAllMatches();
         Match GetMatch(int id);

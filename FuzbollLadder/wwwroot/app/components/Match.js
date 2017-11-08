@@ -3,8 +3,7 @@ import Moment from 'react-moment';
 
 export default class Match extends React.Component {
     render() {
-        const { onDeleteMatch, ratingDelta, id, date, winners = [], losers = [] } = this.props
-        console.log(onDeleteMatch)
+        const { ratingDelta, id, date, winners = [], losers = [] } = this.props
         return (
             <tr className="player-item">
                 <th className="rank" scope="row">
@@ -35,9 +34,13 @@ export default class Match extends React.Component {
                     <button 
                         type="submit" 
                         className="btn btn-warning btn-sm"
-                        onClick={this._onSubmit}>DELETE</button>
+                        onClick={() => this._onSubmit(id)}>DELETE</button>
                 </td>
             </tr>
         )
+    }
+    _onSubmit = id => {
+        const { onDeleteMatch } = this.props
+        onDeleteMatch(id)
     }
 }

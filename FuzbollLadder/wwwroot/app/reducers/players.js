@@ -9,6 +9,10 @@ export default (state = { players: [] }, action) => {
             return {
                 players: state.players.concat(action.players),
             };
+        case actions.PLAYER_REGISTERED:
+            return {
+                players: state.players.concat([action.player]),
+            };
         default:
             return state;
     }

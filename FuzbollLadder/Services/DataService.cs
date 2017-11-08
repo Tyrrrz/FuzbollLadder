@@ -74,14 +74,15 @@ namespace FuzbollLadder.Services
             return _db.GetCollection<Player>().FindById(id);
         }
 
-        public void AddPlayer(string name)
+        public Player AddPlayer(string name)
         {
             var player = new Player
             {
                 Name = name,
                 Rating = _ratingService.DefaultRating
             };
-            _db.GetCollection<Player>().Insert(player);
+            var newPlayer =_db.GetCollection<Player>().Insert(player);
+            return player;
         }
 
         public IEnumerable<Match> GetAllMatches()

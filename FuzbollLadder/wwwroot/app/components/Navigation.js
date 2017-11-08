@@ -5,7 +5,7 @@ import { Menu } from 'antd'
 export default class Navigation extends React.Component {
     render() {
         return (    
-            <Menu mode="horizontal" className="mt-3 mb-5" defaultSelectedKeys={[location.pathname]}>
+            <Menu mode="horizontal" className="mt-3 mb-5" selectedKeys={[location.pathname]}>
                 <Menu.Item key="/">
                     <Link className="navbar-brand nav-item" to='/'>Ladder</Link>
                 </Menu.Item>

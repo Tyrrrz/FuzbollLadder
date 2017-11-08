@@ -28,9 +28,8 @@ namespace FuzbollLadder.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            _dataService.AddPlayer(vm.Name);
-
-            return Ok(vm.Name);
+            var player = _dataService.AddPlayer(vm.Name);
+            return this.Json(player);
         }
     }
 }

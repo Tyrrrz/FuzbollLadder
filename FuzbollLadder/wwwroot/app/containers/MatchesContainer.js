@@ -7,13 +7,13 @@ import store from '../store/index'
 const mapStateToProps = state => state.matches
 
 const mapDispatchToProps = dispatch => (
-  {
-    onDeleteMatch: matchId => MatchesApi.deleteMatch(dispatch, matchId)
-  }
+    {
+        onDeleteMatch: matchId => MatchesApi.deleteMatch(dispatch, matchId)
+    }
 )
 const MatchesContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(Matches)
 
 MatchesApi.loadMatches(store.dispatch, 0)
