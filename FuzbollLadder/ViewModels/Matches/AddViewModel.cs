@@ -4,10 +4,14 @@ namespace FuzbollLadder.ViewModels.Matches
 {
     public class AddViewModel
     {
+        public string winnerNames { get; set; }
+        public string loserNames { get; set; }
         [Required]
-        public string WinnerNamesCsv { get; set; }
+        public string WinnerName1 { get; set; }
+        public string WinnerName2{ get; set; }
 
         [Required]
-        public string LoserNamesCsv { get; set; }
+        public string LoserName1 { get; set; }
+        public string LoserName2 { get; set; }
     }
 }

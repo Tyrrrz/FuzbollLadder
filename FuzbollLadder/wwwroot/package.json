@@ -23,6 +23,7 @@
     "lodash": "4.17.4",
     "moment": "2.19.1",
     "react": "15.6.1",
+    "react-autocomplete-input": "^1.0.5",
     "react-dom": "15.6.1",
     "react-moment": "0.6.5",
     "redux": "3.7.2",

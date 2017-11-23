@@ -18,6 +18,9 @@ export default class Navigation extends React.Component {
                 <Menu.Item key="/matches/add"> 
                     <Link className="navbar-brand nav-item" to='/matches/add'>Submit match</Link>
                 </Menu.Item> 
+                <Menu.Item key="/playerstats"> 
+                    <Link className="navbar-brand nav-item" to='/playerstats'>Statistics</Link>
+                </Menu.Item> 
             </Menu> 
         )
     }

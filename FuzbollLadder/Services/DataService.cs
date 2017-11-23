@@ -81,7 +81,7 @@ namespace FuzbollLadder.Services
                 Name = name,
                 Rating = _ratingService.DefaultRating
             };
-            var newPlayer =_db.GetCollection<Player>().Insert(player);
+            _db.GetCollection<Player>().Insert(player);
             return player;
         }
 
@@ -98,7 +98,7 @@ namespace FuzbollLadder.Services
             return _db.GetCollection<Match>().FindById(id);
         }
 
-        public void AddMatch(DateTime date, IReadOnlyList<Player> winners, IReadOnlyList<Player> losers)
+        public Match AddMatch(DateTime date, IReadOnlyList<Player> winners, IReadOnlyList<Player> losers)
         {
             // Add match
             var match = new Match
@@ -113,6 +113,7 @@ namespace FuzbollLadder.Services
 
             // Add match
             _db.GetCollection<Match>().Insert(match);
+            return match;
         }
 
         public void DeleteMatch(int id)

@@ -13,7 +13,10 @@ export default (state = { matches: [] }, action) => {
             return {
                 matches: state.matches.filter(item => item.id !== action.match)
             }
-            
+        case actions.MATCH_ADDED:
+            return {
+                matches: state.matches.concat([action.match])
+            }
         default:
             return state;
     }

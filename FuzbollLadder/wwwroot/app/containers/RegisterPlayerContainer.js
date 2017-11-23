@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import actions from '../actions'
 import PlayersApi from '../services/PlayersApi'
-import RegisterPlayer from '../components/RegisterPlayer'
+import RegisterPlayer from '../components/RegisterPlayer/RegisterPlayer'
 
 const mapStateToProps = state => state.players
 

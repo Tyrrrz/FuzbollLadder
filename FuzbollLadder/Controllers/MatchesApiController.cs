@@ -31,43 +31,32 @@ namespace FuzbollLadder.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Get player names
-            var winnerNames = vm.WinnerNamesCsv.Split(",").Select(n => n.Trim()).ToArray();
-            var loserNames = vm.LoserNamesCsv.Split(",").Select(n => n.Trim()).ToArray();
-
+            
             // Validate names
-            if (!winnerNames.Any() || !loserNames.Any())
-                return BadRequest("At least one winner and loser is required");
+            //if (!vm.WinnerName1.Any() || !vm.LoserName1.Any() )
+            //    return BadRequest("At least one winner and loser is required");
 
             // Get players
             var players = _dataService.GetAllPlayers().ToArray();
             var winners = new List<Player>();
             var losers = new List<Player>();
-            foreach (var playerName in winnerNames)
-            {
-                var player =
-                    players.FirstOrDefault(p => p.Name.StartsWith(playerName, StringComparison.OrdinalIgnoreCase));
-                if (player == null)
-                    return BadRequest($"Could not find player [{playerName}]");
-                winners.Add(player);
-            }
-            foreach (var playerName in loserNames)
-            {
-                var player =
-                    players.FirstOrDefault(p => p.Name.StartsWith(playerName, StringComparison.OrdinalIgnoreCase));
-                if (player == null)
-                    return BadRequest($"Could not find player [{playerName}]");
-                losers.Add(player);
-            }
+            var winner1 = players.FirstOrDefault(p => p.Name.StartsWith(vm.WinnerName1, StringComparison.OrdinalIgnoreCase));
+            winners.Add(winner1);
+            var winner2 = players.FirstOrDefault(p => p.Name.StartsWith(vm.WinnerName2, StringComparison.OrdinalIgnoreCase));
+            winners.Add(winner2);
+            var loser1 = players.FirstOrDefault(p => p.Name.StartsWith(vm.LoserName1, StringComparison.OrdinalIgnoreCase));
+            losers.Add(loser1);
+            var loser2 = players.FirstOrDefault(p => p.Name.StartsWith(vm.LoserName2, StringComparison.OrdinalIgnoreCase));
+            losers.Add(loser2);
 
             // Add match
-            _dataService.AddMatch(DateTime.Now, winners, losers);
+            var match = _dataService.AddMatch(DateTime.Now, winners, losers);
 
-            return Ok();
+            return this.Json(match);
         }
 
         [HttpDelete]
-        [Route("[action]")]
+        [Route("[action]/{id}")]
         public IActionResult Delete(int id)
         {
             if (!ModelState.IsValid)
@@ -79,7 +68,7 @@ namespace FuzbollLadder.Controllers
             // Recalculate all
             _dataService.RecalculateMatches();
 
-            return RedirectToAction("Index");
+            return Ok();
         }
     }
 }

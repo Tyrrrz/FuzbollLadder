@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import actions from '../actions'
-import Matches from '../components/Matches'
+import Matches from '../components/Matches/Matches'
 import MatchesApi from '../services/MatchesApi'
 import store from '../store/index'
 

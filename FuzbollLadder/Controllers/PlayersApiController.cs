@@ -31,5 +31,13 @@ namespace FuzbollLadder.Controllers
             var player = _dataService.AddPlayer(vm.Name);
             return this.Json(player);
         }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult Statistics()
+        {
+            var playerStats = _dataService.GetAllPlayerStats().ToArray();
+            return Ok(playerStats);
+        }
     }
 }

@@ -1,8 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
-import store from '../store/index'
-import MatchesApi from '../services/MatchesApi'
-import Match from '../components/Match'
+import Match from './Match'
 
 class Matches extends React.Component {
     render() {

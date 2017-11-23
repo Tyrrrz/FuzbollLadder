@@ -1,6 +1,7 @@
 export const actions = {
         'PLAYERS_LOADED': Symbol('PLAYERS_LOADED'),
         'PLAYER_REGISTERED': Symbol('PLAYER_REGISTERED'),
+        'PLAYER_STATS_LOADED': Symbol('PLAYER_STATS_LOADED'),
         'MATCHES_LOADED': Symbol('MATCHES_LOADED'),
         'MATCH_ADDED': Symbol('MATCH_ADDED'),
         'MATCH_DELETED': Symbol('MATCH_DELETED')
@@ -14,6 +15,10 @@ export const actions = {
         PLAYER_REGISTERED: (player) => ({
             type: actions.PLAYER_REGISTERED,
             player
+        }),
+        PLAYER_STATS_LOADED: (stats) => ({
+            type: actions.PLAYER_STATS_LOADED,
+            stats
         }),
         MATCHES_LOADED: (matches) => ({
             type: actions.MATCHES_LOADED,

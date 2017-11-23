@@ -16,4 +16,15 @@ export default {
         .then(x => x.json())
         .then(x => dispatch(actions.PLAYER_REGISTERED(x)));
     },
+    loadPlayerStats: (dispatch, index = 0) => {
+        fetch(`/api/playerstats/index`, {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(x => x.json())
+        .then(x => dispatch(actions.PLAYER_STATS_LOADED(x)));
+    },
 };

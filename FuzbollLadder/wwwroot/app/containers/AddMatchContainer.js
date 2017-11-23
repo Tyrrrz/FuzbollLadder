@@ -1,14 +1,14 @@
 import { connect } from 'react-redux'
 import actions from '../actions'
-import AddMatch from '../components/AddMatch'
+import AddMatch from '../components/AddMatch/AddMatch'
 import MatchesApi from '../services/MatchesApi'
 
 
-const mapStateToProps = state => state.matches || {}
+const mapStateToProps = state => state.players
 
 const mapDispatchToProps = dispatch => (
   {
-    onAddMatch: (winners, losers) => MatchesApi.addMatch(dispatch, winners, losers)
+    onAddMatch: (winner1, winner2, loser1, loser2) => MatchesApi.addMatch(dispatch, winner1, winner2, loser1, loser2)
   }
 )
 

@@ -1,13 +1,13 @@
 import { actions } from '../actions';
 
-export default (state = { players: [] }, action) => {
+export default (state = { players: [], playerStats: [] }, action) => {
     switch (action.type) {
         case actions.PLAYERS_LOADED:
             if (!action.players || action.players.lenght === 0) {
                 return state;
             }
             return {
-                players: state.players.concat(action.players),
+                players: state.players.concat(action.players)
             };
         case actions.PLAYER_REGISTERED:
             return {

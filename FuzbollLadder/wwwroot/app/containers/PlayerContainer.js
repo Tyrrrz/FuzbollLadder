@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import actions from '../actions'
-import Players from '../components/Players'
+import Players from '../components/Players/Players'
 import store from '../store/index'
 import PlayersApi from '../services/PlayersApi'
 
