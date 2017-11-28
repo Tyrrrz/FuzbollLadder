@@ -31,24 +31,10 @@ namespace FuzbollLadder.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            
-            // Validate names
-            //if (!vm.WinnerName1.Any() || !vm.LoserName1.Any() )
-            //    return BadRequest("At least one winner and loser is required");
-
-            // Get players
             var players = _dataService.GetAllPlayers().ToArray();
-            var winners = new List<Player>();
-            var losers = new List<Player>();
-            var winner1 = players.FirstOrDefault(p => p.Name.StartsWith(vm.WinnerName1, StringComparison.OrdinalIgnoreCase));
-            winners.Add(winner1);
-            var winner2 = players.FirstOrDefault(p => p.Name.StartsWith(vm.WinnerName2, StringComparison.OrdinalIgnoreCase));
-            winners.Add(winner2);
-            var loser1 = players.FirstOrDefault(p => p.Name.StartsWith(vm.LoserName1, StringComparison.OrdinalIgnoreCase));
-            losers.Add(loser1);
-            var loser2 = players.FirstOrDefault(p => p.Name.StartsWith(vm.LoserName2, StringComparison.OrdinalIgnoreCase));
-            losers.Add(loser2);
-
+            var winners = players.Where(p => vm.WinnerIds.Contains(p.Id));
+            var losers = players.Where(p => vm.LoserIds.Contains(p.Id));
+            
             // Add match
             var match = _dataService.AddMatch(DateTime.Now, winners, losers);
 

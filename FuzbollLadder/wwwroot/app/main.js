@@ -8,29 +8,28 @@ import registerServiceWorker from './registerServiceWorker'
 global.jQuery = require('jquery')
 global.Tether = require('tether')
 require('bootstrap')
-import './../sass/layout.scss'
+import './../sass/index.scss'
 import RegisterPlayerContainer from './containers/RegisterPlayerContainer'
 import MatchesContainer from './containers/MatchesContainer'
 import AddMatchContainer from './containers/AddMatchContainer'
 import PlayerStatsContainer from './containers/PlayerStatsContainer'
 import Navigation from './components/Navigation/Navigation'
 import 'antd/dist/antd.css'
+import 'react-notifications/lib/notifications.css'
+import {NotificationContainer} from 'react-notifications'
 
 ReactDOM.render(
     <Provider store={store}>
       <Router basename="/">
         <div className="layout-container">
-          <header>
             <h1 className="h1 mt-3">Fuzboll Ladder</h1>
             <Navigation />
-          </header>
-          <section>
             <Route exact path="/" component={App} />
             <Route exact path="/players/add" component={RegisterPlayerContainer} />
             <Route exact path="/matches" component={MatchesContainer} />
             <Route exact path="/matches/add" component={AddMatchContainer} />
             <Route exact path="/playerstats" component={PlayerStatsContainer} />
-          </section>  
+            <NotificationContainer/>
         </div>
       </Router>
     </Provider>,

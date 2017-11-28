@@ -1,5 +1,6 @@
 import React from 'react'
 import { isFunction } from 'lodash'
+import {NotificationManager} from 'react-notifications'
 
 export default class RegisterPlayer extends React.Component {
     state = {
@@ -23,11 +24,11 @@ export default class RegisterPlayer extends React.Component {
                             Register
                         </button>
                     </span>
-
                 </div>
             </div>
         )
     }
+
 
     _setValue = event => {
         this.setState({player: event.target.value})
@@ -38,6 +39,7 @@ export default class RegisterPlayer extends React.Component {
         const { player } = this.state
 
         if (isFunction(onRegisterPlayer)) {
+            NotificationManager.success(`Player "${player}" successfully created!`, 'Success')
             onRegisterPlayer(player)
             this.props.history.push('/')
         }

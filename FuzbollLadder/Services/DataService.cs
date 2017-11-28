@@ -98,7 +98,7 @@ namespace FuzbollLadder.Services
             return _db.GetCollection<Match>().FindById(id);
         }
 
-        public Match AddMatch(DateTime date, IReadOnlyList<Player> winners, IReadOnlyList<Player> losers)
+        public Match AddMatch(DateTime date, IEnumerable<Player> winners, IEnumerable<Player> losers)
         {
             // Add match
             var match = new Match

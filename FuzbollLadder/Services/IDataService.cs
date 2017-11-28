@@ -12,7 +12,7 @@ namespace FuzbollLadder.Services
 
         IEnumerable<Match> GetAllMatches();
         Match GetMatch(int id);
-        Match AddMatch(DateTime date, IReadOnlyList<Player> winners, IReadOnlyList<Player> losers);
+        Match AddMatch(DateTime date, IEnumerable<Player> winners, IEnumerable<Player> losers);
         void DeleteMatch(int id);
         void RecalculateMatches();
 
