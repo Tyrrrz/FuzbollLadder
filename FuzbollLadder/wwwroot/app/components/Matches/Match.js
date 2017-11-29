@@ -1,6 +1,6 @@
 import React from 'react'
 import Moment from 'react-moment'
-import NotificationManager from 'react-notifications'
+import {NotificationManager} from 'react-notifications'
 
 export default class Match extends React.Component {
     render() {

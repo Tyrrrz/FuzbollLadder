@@ -42,7 +42,7 @@ namespace FuzbollLadder.Controllers
         }
 
         [HttpDelete]
-        [Route("[action]/{id}")]
+        [Route("{id}")]
         public IActionResult Delete(int id)
         {
             if (!ModelState.IsValid)

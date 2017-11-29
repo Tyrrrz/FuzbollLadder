@@ -29,47 +29,7 @@ namespace FuzbollLadder.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Add(AddViewModel vm)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            // Get player names
-            var winnerNames = vm.WinnerNamesCsv.Split(",").Select(n => n.Trim()).ToArray();
-            var loserNames = vm.LoserNamesCsv.Split(",").Select(n => n.Trim()).ToArray();
-
-            // Validate names
-            if (!winnerNames.Any() || !loserNames.Any())
-                return BadRequest("At least one winner and loser is required");
-
-            // Get players
-            var players = _dataService.GetAllPlayers().ToArray();
-            var winners = new List<Player>();
-            var losers = new List<Player>();
-            foreach (var playerName in winnerNames)
-            {
-                var player =
-                    players.FirstOrDefault(p => p.Name.StartsWith(playerName, StringComparison.OrdinalIgnoreCase));
-                if (player == null)
-                    return BadRequest($"Could not find player [{playerName}]");
-                winners.Add(player);
-            }
-            foreach (var playerName in loserNames)
-            {
-                var player =
-                    players.FirstOrDefault(p => p.Name.StartsWith(playerName, StringComparison.OrdinalIgnoreCase));
-                if (player == null)
-                    return BadRequest($"Could not find player [{playerName}]");
-                losers.Add(player);
-            }
-
-            // Add match
-            _dataService.AddMatch(DateTime.Now, winners, losers);
-
-            return RedirectToAction("Index");
-        }
-
+       
         [HttpPost]
         public IActionResult Delete(int id)
         {
